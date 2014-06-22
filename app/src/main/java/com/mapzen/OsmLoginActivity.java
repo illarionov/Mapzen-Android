@@ -76,9 +76,6 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
             .createDefault();
     private static OAuthProvider provider = oauthParams.buildProvider();
     private static OAuthConsumer consumer = oauthParams.buildConsumer();
-    private static OAuthToken oauthAccessToken;
-    private static OAuthAccessTokenHolder accessTokenHolder = OAuthAccessTokenHolder
-            .getInstance();
     private static OauthValidationTask oauthCredentaialsValidationTask;
 
     private static String token;
@@ -111,27 +108,37 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
         super.onResume();
 
         Uri uri = this.getIntent().getData();
-
         if (uri != null && uri.toString().startsWith(CALLBACK_URL)) {
-            Intent i = new Intent(this, MapActivity.class);
+            new CheckAccessTokenThread().start();
+        }
+    }
+
+    private class CheckAccessTokenThread extends Thread {
+        @Override
+        public void run() {
+            Uri uri = OsmLoginActivity.this.getIntent().getData();
+            Intent i = new Intent(OsmLoginActivity.this, MapActivity.class);
 
             try {
-                if ((token != null && secret != null)) {
-                    consumer.setTokenWithSecret(token, secret);
+                synchronized (OsmLoginActivity.this) {
+                    if ((token != null && secret != null)) {
+                        consumer.setTokenWithSecret(token, secret);
+                    }
+                    String otoken = uri.getQueryParameter(OAuth.OAUTH_TOKEN);
+                    String verifier = uri.getQueryParameter(OAuth.OAUTH_VERIFIER);
+                    //Assert.assertEquals(otoken, consumer.getToken());
+
+                    provider.retrieveAccessToken(consumer, verifier);
+                    token = consumer.getToken();
+                    secret = consumer.getTokenSecret();
+                    OAuthToken oauthAccessToken = OAuthToken.createToken(consumer);
+                    OAuthAccessTokenHolder accessTokenHolder = OAuthAccessTokenHolder
+                            .getInstance();
+                    accessTokenHolder.setAccessToken(oauthAccessToken);
+                    accessTokenHolder.saveToPreferences(Mapzen.getSharedPreferences());
+                    i.putExtra(ACCESS_TOKEN, token);
+                    i.putExtra(ACCESS_SECRET, secret);
                 }
-
-                String otoken = uri.getQueryParameter(OAuth.OAUTH_TOKEN);
-                String verifier = uri.getQueryParameter(OAuth.OAUTH_VERIFIER);
-                //Assert.assertEquals(otoken, consumer.getToken());
-
-                provider.retrieveAccessToken(consumer, verifier);
-                token = consumer.getToken();
-                secret = consumer.getTokenSecret();
-                oauthAccessToken = OAuthToken.createToken(consumer);
-                accessTokenHolder.setAccessToken(oauthAccessToken);
-                accessTokenHolder.saveToPreferences(Mapzen.getSharedPreferences());
-                i.putExtra(ACCESS_TOKEN, token);
-                i.putExtra(ACCESS_SECRET, secret);
             } catch (OAuthMessageSignerException e) {
                 e.printStackTrace();
             } catch (OAuthNotAuthorizedException e) {
@@ -147,12 +154,17 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
                  * we either authenticated and have the token & secret or not,
                  * but we're going back
                  */
-                if(validateOsmOauthCredentials(token, secret) == 1) {
-                    startActivity(new Intent(OsmLoginActivity.this, MapActivity.class));
-                } else
-                    showDialog(DIALOG_NETWORK_PROBLEMS);
+                final boolean isValid  = (validateOsmOauthCredentials(token, secret) == 1);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isValid) {
+                            startActivity(new Intent(OsmLoginActivity.this, MapActivity.class));
+                        } else
+                            showDialog(DIALOG_NETWORK_PROBLEMS);
+                    }
+                });
             }
-
         }
     }
 
@@ -212,7 +224,8 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
     private String getAuthorizationUrl() {
         String authUrl = null;
         try {
-            authUrl = provider.retrieveRequestToken(consumer, CALLBACK_URL);
+            authUrl = provider.retrieveRequestToken(consumer,
+                    /* XXX */ "mapzen:////osm_callback");
             token = consumer.getToken();
             secret = consumer.getTokenSecret();
         } catch (OAuthMessageSignerException e) {
@@ -294,8 +307,19 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
         public void onClick(View v) {
             Intent i = OsmLoginActivity.this.getIntent();
             if (i.getData() == null) {
-                String authUrl = OsmLoginActivity.this.getAuthorizationUrl();
-                OsmLoginActivity.this.authorizeApplicationInOSM(authUrl);
+                // XXX
+                new Thread() {
+                    @Override
+                    public void run() {
+                        final String authUrl = OsmLoginActivity.this.getAuthorizationUrl();
+                        OsmLoginActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                authorizeApplicationInOSM(authUrl);
+                            }
+                        });
+                    }
+                }.start();
             }
         }
     };
@@ -359,5 +383,4 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
             }
         }
     }
-
 }

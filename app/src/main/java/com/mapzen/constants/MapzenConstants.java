@@ -53,9 +53,9 @@ public interface MapzenConstants {
 //	public static final String CONSUMER_SECRET = "0SoBtrSyuvxzR7SUWbISUwuauTryh8oNEBexRdyNXk";
 //	public static final String OSM_API_BASE_URL = OSM_SERVER_ADDRESS+"/api";
     /* api06 test server*/
-    public static final String OSM_SERVER_ADDRESS = "http://api06.dev.openstreetmap.org";
-    public static final String CONSUMER_KEY = "4j3ARote3hTjVea6cmnMSgGn0LEehNCxdrgCdVfJ";
-    public static final String CONSUMER_SECRET = "UKRafyuSIXETGmvKz5RUmxg10KH4Tklg955651Ce";
+    public static final String OSM_SERVER_ADDRESS = "http://master.apis.dev.openstreetmap.org";
+    public static final String CONSUMER_KEY = "pCcgGqMCg91CDDbsbhLYQgLYAfV9IBUmFFMC1zZl";
+    public static final String CONSUMER_SECRET = "91kzSFar5whEjNzuIFNP1FPKK51Gr40E4pGbqcjm";
     public static final String OSM_API_BASE_URL = OSM_SERVER_ADDRESS + "/api";
     /* Production server settings */
 //	public static final String OSM_SERVER_ADDRESS = "http://www.openstreetmap.org";
