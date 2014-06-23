@@ -1,0 +1,10 @@
+release.OsmServerAddress="http://www.openstreetmap.org"
+release.OsmConsumerKey="123"
+release.OsmConsumerSecret="123"
+
+release.StoreFile=../mapzen_app.keystore
+release.StorePassword=mapzen
+release.KeyAlias=mapzen
+release.KeyPassword=mapzen
+
+

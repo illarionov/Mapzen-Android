@@ -102,7 +102,7 @@ public class ViewPoiActivity extends Activity implements MapzenConstants {
             break;
         //this menu item is disabled
         case R.id.lookup_poi_in_osm:
-            StringBuilder sb = new StringBuilder(OSM_SERVER_ADDRESS)
+            StringBuilder sb = new StringBuilder(BuildConfig.OSM_SERVER_ADDRESS)
                 .append("/browse/node/")
                 .append(poi.getId());
             Intent intent = new Intent(

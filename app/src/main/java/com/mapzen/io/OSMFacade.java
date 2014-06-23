@@ -29,6 +29,7 @@ package com.mapzen.io;
 
 import org.osmdroid.util.BoundingBoxE6;
 
+import com.mapzen.BuildConfig;
 import com.mapzen.constants.MapzenConstants;
 import com.mapzen.data.StatisticManager;
 import com.mapzen.data.osm.Changeset;
@@ -59,7 +60,7 @@ public class OSMFacade implements MapzenConstants {
      *
      */
     public MapDataSet getPois(final double north, final double east, final double south, final double west ) {
-        final String url = OSM_SERVER_ADDRESS+"/api/0.6/map?bbox="+west+","+south+","+east+","+north;
+        final String url = BuildConfig.OSM_SERVER_ADDRESS+"/api/0.6/map?bbox="+west+","+south+","+east+","+north;
         return _osmXmlReader.downloadAndParse(url);
     }
 

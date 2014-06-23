@@ -30,6 +30,8 @@ package com.mapzen.constants;
 
 import android.app.Activity;
 
+import com.mapzen.BuildConfig;
+
 /**
  * @author Vitalii
  *
@@ -47,28 +49,17 @@ public interface MapzenConstants {
     public static final int minZoomForOsmDataDownload = 17;
     public static final int mapMovingDeadZone = 10; //px
 
-    /* OAuth constants start */
-//	public static final String OSM_SERVER_ADDRESS = "http://10.1.0.200:3010";
-//	public static final String CONSUMER_KEY = "nJ8oWL2xiqeckDfCDtaI2g";
-//	public static final String CONSUMER_SECRET = "0SoBtrSyuvxzR7SUWbISUwuauTryh8oNEBexRdyNXk";
-//	public static final String OSM_API_BASE_URL = OSM_SERVER_ADDRESS+"/api";
     /* api06 test server*/
-    public static final String OSM_SERVER_ADDRESS = "http://master.apis.dev.openstreetmap.org";
-    public static final String CONSUMER_KEY = "pCcgGqMCg91CDDbsbhLYQgLYAfV9IBUmFFMC1zZl";
-    public static final String CONSUMER_SECRET = "91kzSFar5whEjNzuIFNP1FPKK51Gr40E4pGbqcjm";
-    public static final String OSM_API_BASE_URL = OSM_SERVER_ADDRESS + "/api";
+
+    public static final String OSM_API_BASE_URL = BuildConfig.OSM_SERVER_ADDRESS + "/api";
     /* Production server settings */
-//	public static final String OSM_SERVER_ADDRESS = "http://www.openstreetmap.org";
-//	public static final String CONSUMER_KEY = "";
-//	public static final String CONSUMER_SECRET = "";
-//	public static final String OSM_API_BASE_URL = "http://api.openstreetmap.org/api";
     /* General OAuth settings */
     public static final String CALLBACK_URL = "mapzen://osm_callback";
-    public static final String REQUEST_TOKEN_URL = OSM_SERVER_ADDRESS
+    public static final String REQUEST_TOKEN_URL = BuildConfig.OSM_SERVER_ADDRESS
             + "/oauth/request_token";
-    public static final String ACCESS_TOKEN_URL = OSM_SERVER_ADDRESS
+    public static final String ACCESS_TOKEN_URL = BuildConfig.OSM_SERVER_ADDRESS
             + "/oauth/access_token";
-    public static final String AUTHORIZATION_URL = OSM_SERVER_ADDRESS
+    public static final String AUTHORIZATION_URL = BuildConfig.OSM_SERVER_ADDRESS
             + "/oauth/authorize";
     /* OAuth string constants */
     public static final String REQUEST_TOKEN = "request_token";
@@ -79,7 +70,8 @@ public interface MapzenConstants {
 
     public static final String OSM_API_VERSION = "0.6";
 
-    public static final String OSM_CREATOR_INFO = "Mapzen POI Collector for Android 0.5";
+    public static final String OSM_CREATOR_INFO = "Mapzen POI Collector for Android "
+            + ( BuildConfig.VERSION_NAME != null ? BuildConfig.VERSION_NAME : "");
 
     public static final String PREFERENCES_FILE = "Mapzen.preferences";
     public static final String PREFS_ZOOM_LEVEL = "startZoom";
