@@ -28,6 +28,7 @@ either expressed or implied, of the FreeBSD Project.
 
 package com.mapzen.data.osm.oauth;
 
+import com.mapzen.BuildConfig;
 import com.mapzen.constants.MapzenConstants;
 
 import oauth.signpost.OAuthConsumer;
@@ -57,8 +58,8 @@ public class OAuthParameters implements MapzenConstants {
      */
     static public OAuthParameters createDefault() {
         OAuthParameters parameters = new OAuthParameters();
-        parameters.setConsumerKey(CONSUMER_KEY);
-        parameters.setConsumerSecret(CONSUMER_SECRET);
+        parameters.setConsumerKey(BuildConfig.OSM_CONSUMER_KEY);
+        parameters.setConsumerSecret(BuildConfig.OSM_CONSUMER_SECRET);
         parameters.setRequestTokenUrl(REQUEST_TOKEN_URL);
         parameters.setAccessTokenUrl(ACCESS_TOKEN_URL);
         parameters.setAuthoriseUrl(AUTHORIZATION_URL);

@@ -1,5 +1,10 @@
 apply plugin: 'android'
 
+ext.private = new Properties()
+if (rootProject.file('private.properties').exists()) {
+    ext.private.load(new FileInputStream(rootProject.file('private.properties')));
+}
+
 android {
     compileSdkVersion 19
     buildToolsVersion "19.1.0"
@@ -23,6 +28,21 @@ android {
 
     }
 
+    defaultConfig {
+        versionCode 3
+        versionName "0.6"
+
+        buildConfigField "String", "OSM_SERVER_ADDRESS",
+                project.ext.private.getProperty("default.OsmServerAddress",
+                        "\"http://master.apis.dev.openstreetmap.org\"")
+        buildConfigField "String", "OSM_CONSUMER_KEY",
+                project.ext.private.getProperty("default.OsmConsumerKey",
+                        "\"pCcgGqMCg91CDDbsbhLYQgLYAfV9IBUmFFMC1zZl\"")
+        buildConfigField "String", "OSM_CONSUMER_SECRET",
+                project.ext.private.getProperty("default.OsmConsumerSecret",
+                "\"91kzSFar5whEjNzuIFNP1FPKK51Gr40E4pGbqcjm\"")
+    }
+
     signingConfigs {
         release
     }
@@ -32,6 +52,12 @@ android {
             runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            buildConfigField "String", "OSM_SERVER_ADDRESS",
+                    project.ext.private.getProperty("release.OsmServerAddress", "\"http://www.openstreetmap.org\"")
+            buildConfigField "String", "OSM_CONSUMER_KEY",
+                    project.ext.private.getProperty("release.OsmConsumerKey", "\"\"")
+            buildConfigField "String", "OSM_CONSUMER_SECRET",
+                    project.ext.private.getProperty("release.OsmConsumerSecret", "\"\"")
         }
     }
 
@@ -40,11 +66,11 @@ android {
     }
 }
 
-if (hasProperty('StoreFile')) {
-    android.signingConfigs.release.storeFile = file(StoreFile)
-    android.signingConfigs.release.storePassword = StorePassword
-    android.signingConfigs.release.keyAlias = KeyAlias
-    android.signingConfigs.release.keyPassword = KeyPassword
+if (ext.private.getProperty('release.StoreFile') != null) {
+    android.signingConfigs.release.storeFile = file(ext.private['release.StoreFile'])
+    android.signingConfigs.release.storePassword = ext.private['release.StorePassword']
+    android.signingConfigs.release.keyAlias = ext.private['release.KeyAlias']
+    android.signingConfigs.release.keyPassword = ext.private['release.KeyPassword']
 } else {
     android.buildTypes.release.signingConfig = null
 }

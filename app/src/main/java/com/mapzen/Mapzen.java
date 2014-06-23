@@ -54,17 +54,6 @@ public class Mapzen extends Application implements MapzenConstants {
 
     private static SharedPreferences mSettings;
 
-    public String getAppVersion() {
-        String appVersion;
-        try {
-            appVersion = getPackageManager().getPackageInfo(
-                    getPackageName(), PackageManager.GET_META_DATA).versionName;
-        } catch (NameNotFoundException e) {
-            appVersion = "";
-        }
-        return appVersion;
-    }
-
     private void initDataManagers() {
         ResourceManager.getInstance().init(getApplicationContext());
         OsmDriver.getInstance().init(

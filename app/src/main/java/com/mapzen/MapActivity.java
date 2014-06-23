@@ -104,9 +104,8 @@ public class MapActivity extends Activity implements
         case DIALOG_ABOUT:
             layout = inflater.inflate(R.layout.about_dialog,
                     (ViewGroup) findViewById(R.id.about_dialog_layout_root));
-            String appVersion = ((Mapzen)this.getApplication()).getAppVersion();
             builder = new AlertDialog.Builder(this).setView(layout).setTitle(
-                    getString(R.string.app_name) + " " + appVersion)
+                    getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME)
                     .setPositiveButton(R.string.dialog_ok_button,
                             new DialogInterface.OnClickListener() {
 

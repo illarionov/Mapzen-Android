@@ -267,7 +267,7 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
             String oauthSecret) {
         int result = 0;
         if (oauthSecret != null && oauthToken != null) {
-            HttpGet get = new HttpGet(OSM_SERVER_ADDRESS
+            HttpGet get = new HttpGet(BuildConfig.OSM_SERVER_ADDRESS
                     + "/api/0.6/user/details");
             try {
                 consumer.setTokenWithSecret(oauthToken, oauthSecret);
@@ -327,7 +327,7 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
     private OnClickListener registerAtOsmOnClickListener = new OnClickListener() {
         public void onClick(View v) {
             Intent i = new Intent(Intent.ACTION_VIEW, Uri
-                    .parse(OSM_SERVER_ADDRESS + "/user/new"));
+                    .parse(BuildConfig.OSM_SERVER_ADDRESS + "/user/new"));
             startActivity(i);
         }
     };
