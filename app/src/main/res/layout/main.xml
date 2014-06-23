@@ -7,8 +7,6 @@
 
     <org.osmdroid.views.MapView
         android:id="@+id/mapViewId"
-        style="14852"
-        tilesource="CloudMadeStandardTiles"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:clickable="true"/>
