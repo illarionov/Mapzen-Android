@@ -6,6 +6,7 @@
     <string name="app_name">Mapzen POI Collector</string>
     <string name="poi_info_screen_caption">Просмотр места</string>
     <string name="edit_poi_screen_caption">Редактирование места</string>
+    <string name="edit_specific_poi_screen_caption">Редактирование `%s`</string>
     <string name="select_category_screen_caption">Выберите категорию места</string>
     <string name="select_sub_type_screen_caption">Выберите тип места</string>
 

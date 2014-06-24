@@ -38,7 +38,9 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -76,7 +78,7 @@ public class PoiGroupsListActivity extends ListActivity implements MapzenConstan
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
         case SELECT_POI_SUB_TYPE_REQUEST_CODE:
             if (resultCode == RESULT_OK) {

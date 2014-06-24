@@ -35,12 +35,16 @@ import com.mapzen.data.osm.OsmNode;
 import com.mapzen.map.overlays.OsmPoisOverlay;
 import com.mapzen.util.StringPair;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,7 +56,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ViewPoiActivity extends Activity implements MapzenConstants {
+public class ViewPoiActivity extends ActionBarActivity implements MapzenConstants {
 
     private OsmNode poi;
     private PoiDataArrayAdapter poiDataListAdapter;
@@ -62,6 +66,7 @@ public class ViewPoiActivity extends Activity implements MapzenConstants {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent i = getIntent();
         if (i != null) {
             setContentView(R.layout.view_poi);
@@ -71,6 +76,7 @@ public class ViewPoiActivity extends Activity implements MapzenConstants {
                     R.layout.view_poi_details_first_row);
             poiDataListView = (ListView) findViewById(R.id.viewPoiDetailsListView);
             poiDataListView.setAdapter(poiDataListAdapter);
+            refreshTitle();
         }
     }
 
@@ -95,22 +101,23 @@ public class ViewPoiActivity extends Activity implements MapzenConstants {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.edit_poi_menu_item:
-            Intent i = new Intent(ViewPoiActivity.this, EditPoiActivity.class);
-            i.putExtra("id", poi.getId());
-            startActivityForResult(i, EDIT_POI_ACTIVITY_REQUEST_CODE);
-            break;
-        //this menu item is disabled
-        case R.id.lookup_poi_in_osm:
-            StringBuilder sb = new StringBuilder(BuildConfig.OSM_SERVER_ADDRESS)
-                .append("/browse/node/")
-                .append(poi.getId());
-            Intent intent = new Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(sb.toString()));
-            startActivity(intent);
-            break;
-        default: break;
+            case R.id.edit_poi_menu_item:
+                Intent i = new Intent(ViewPoiActivity.this, EditPoiActivity.class);
+                i.putExtra("id", poi.getId());
+                startActivityForResult(i, EDIT_POI_ACTIVITY_REQUEST_CODE);
+                break;
+            //this menu item is disabled
+            case R.id.lookup_poi_in_osm:
+                StringBuilder sb = new StringBuilder(BuildConfig.OSM_SERVER_ADDRESS)
+                        .append("/browse/node/")
+                        .append(poi.getId());
+                Intent intent = new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(sb.toString()));
+                startActivity(intent);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
         return true;
     }
@@ -170,6 +177,15 @@ public class ViewPoiActivity extends Activity implements MapzenConstants {
         }
     }
 
+    private void refreshTitle() {
+        String title = "";
+        if (poi != null) {
+            title = poi.getName();
+            if (TextUtils.isEmpty(title)) title = poi.getTypeDescription();
+        }
+        setTitle(title);
+    }
+
     private class PoiDataArrayAdapter extends ArrayAdapter<StringPair> {
 
         private final LayoutInflater mInflater;
@@ -205,14 +221,7 @@ public class ViewPoiActivity extends Activity implements MapzenConstants {
                     poiName.setText(dataItem.value);
                 } else {
                     if (dataItem.key.equals("type")) {
-                        if (!dataItem.value.equals("unknown"))
-                        {
-                            String poiCategoryName = ResourceManager.getInstance().getStringResource(OsmDriver.getInstance().getCategory(dataItem.value));
-                            String poiTypeName = ResourceManager.getInstance().getStringResource(dataItem.value);
-                            value = poiCategoryName + " : " + poiTypeName;
-                        } else {
-                            value = ViewPoiActivity.this.poi.getTags().toString();
-                        }
+                        value = poi.getTypeDescription();
                     }
                 TextView typeLabel = (TextView) v
                     .findViewById(R.id.ViewPoiDetailsListViewLabelId);
@@ -230,8 +239,5 @@ public class ViewPoiActivity extends Activity implements MapzenConstants {
             }
             return v;
         }
-
     }
-
-
 }

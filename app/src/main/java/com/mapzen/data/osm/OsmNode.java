@@ -39,8 +39,10 @@ import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.GeoPoint;
 
 import com.mapzen.R;
+import com.mapzen.configuration.OsmDriver;
 import com.mapzen.data.ResourceManager;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -382,6 +384,16 @@ public class OsmNode implements Tagged {
 
     public void setChangesetId(long changesetId) {
         this._changesetId = changesetId;
+    }
+
+    public String getTypeDescription() {
+        if (!"unknown".equals(_type)) {
+            String poiCategoryName = ResourceManager.getInstance().getStringResource(OsmDriver.getInstance().getCategory(_type));
+            String poiTypeName = ResourceManager.getInstance().getStringResource(_type);
+            return poiCategoryName + " : " + poiTypeName;
+        } else {
+            return getTags().toString();
+        }
     }
 
     public void setOsmIdAndVersion(long id, int version) {

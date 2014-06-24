@@ -375,7 +375,9 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
 
             case 1:
                 OsmLoginActivity.this.finish();
-                startActivity(new Intent(OsmLoginActivity.this, MapActivity.class));
+                OsmLoginActivity.this.overridePendingTransition(0, 0);
+                Intent intent = new Intent(OsmLoginActivity.this, MapActivity.class);
+                startActivity(intent);
                 break;
 
             default:

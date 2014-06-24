@@ -48,7 +48,8 @@ public class CustomZoomControl extends ZoomControls {
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // Ugly code : force buttons be equal size.
-        float displayDensity = ResourceManager.getInstance().getDisplayDensity();
+        float displayDensity = getResources().getDisplayMetrics().density;
+
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         LayoutParams layoutParams = (android.widget.LinearLayout.LayoutParams) getChildAt(0).getLayoutParams();
         layoutParams.width = (int) (60 * displayDensity);

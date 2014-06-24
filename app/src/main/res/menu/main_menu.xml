@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/my_location"
-        android:icon="@drawable/ic_menu_mylocation"
-        android:title="@string/my_location" />
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/add_poi"
         android:icon="@drawable/ic_menu_add"
-        android:title="@string/add_poi" />
+        android:title="@string/add_poi"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/my_location"
+        android:icon="@drawable/ic_menu_mylocation"
+        android:title="@string/my_location"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/more_menu_item_id"
         android:icon="@drawable/ic_menu_more"
-        android:title="@string/more_menu_item">
+        android:title="@string/more_menu_item"
+        app:showAsAction="ifRoom">
         <menu>
             <item
                 android:id="@+id/settings_menu_item_id"

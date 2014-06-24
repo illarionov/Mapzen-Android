@@ -48,6 +48,9 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -64,7 +67,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class EditPoiActivity extends Activity implements MapzenConstants {
+public class EditPoiActivity extends ActionBarActivity implements MapzenConstants {
 
     private static final int EDIT_NAME_DIALOG = 0;
     private static final int EDIT_WEBSITE_DIALOG = 1;
@@ -75,31 +78,45 @@ public class EditPoiActivity extends Activity implements MapzenConstants {
     private static final int SAVE_TO_OSM_PROGRESS_DIALOG = 6;
     private static final int UNSAVED_POI_WARNING_DIALOG = 7;
 
+    private static final String BUNLE_KEY_POI_ID = "com.mapzen.EditPoiActivity.id";
+
     private static OsmNode poi;
     private PoiTypeControlArrayAdapter poiInfoListAdapter;
-    private ListView poiDataListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        long poiId = Long.MIN_VALUE;
 
-        Intent i = getIntent();
-        if (i != null) {
-            setContentView(R.layout.edit_poi);
-            long id = i.getLongExtra("id", -10);
-            poi = new OsmNode(OsmPoisOverlay.getPoi(id));
+        setContentView(R.layout.edit_poi);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (savedInstanceState != null) {
+            poiId = savedInstanceState.getLong(BUNLE_KEY_POI_ID);
+        } else {
+            Intent i = getIntent();
+            if (i != null) poiId = i.getLongExtra("id", Long.MIN_VALUE);
         }
 
-        if (poi == null) {
+        if (poiId == Long.MIN_VALUE) {
             setResult(RESULT_CANCELED);
             finish();
-        } else {
-            poiInfoListAdapter = new PoiTypeControlArrayAdapter(this,
-                    R.layout.edit_poi_details_first_row);
-            poiDataListView = (ListView) findViewById(R.id.poiTypeListView);
-            poiDataListView.setAdapter(poiInfoListAdapter);
-            poiDataListView.setOnItemClickListener(onPoiDetailsListItemClickListener);
+            return;
         }
+
+        poi = new OsmNode(OsmPoisOverlay.getPoi(poiId));
+        poiInfoListAdapter = new PoiTypeControlArrayAdapter(this,
+                R.layout.edit_poi_details_first_row);
+        ListView poiDataListView = (ListView) findViewById(R.id.poiTypeListView);
+        poiDataListView.setAdapter(poiInfoListAdapter);
+        poiDataListView.setOnItemClickListener(onPoiDetailsListItemClickListener);
+        refreshTitle();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putLong(BUNLE_KEY_POI_ID, poi.getId());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -111,6 +128,7 @@ public class EditPoiActivity extends Activity implements MapzenConstants {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
         case SELECT_POI_CATEGORY_REQUEST_CODE:
         case SELECT_POI_SUB_TYPE_REQUEST_CODE:
@@ -146,10 +164,17 @@ public class EditPoiActivity extends Activity implements MapzenConstants {
         case R.id.deletePoiMenuItemId:
             new DeleteInOsmAsyncTask().execute(poi);
             break;
-        default:
+        case android.R.id.home:
+            if (isPoiChanged()) {
+                showDialog(UNSAVED_POI_WARNING_DIALOG);
+            } else {
+                return super.onOptionsItemSelected(item);
+            }
             break;
+        default:
+            return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void cancelEditPOI() {
@@ -167,6 +192,15 @@ public class EditPoiActivity extends Activity implements MapzenConstants {
 
     private boolean isPoiChanged() {
         return !poi.equals(OsmPoisOverlay.getPoi(poi.getId()));
+    }
+
+    private void refreshTitle() {
+        String title = "";
+        if (poi != null) {
+            title = poi.getName();
+            if (TextUtils.isEmpty(title)) title = poi.getTypeDescription();
+        }
+        setTitle(getString(R.string.edit_specific_poi_screen_caption, title));
     }
 
     @Override

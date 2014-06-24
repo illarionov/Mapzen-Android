@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="windowBackground">
-        <!-- <item name="android:background">@drawable/background</item>
-         -->
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">fill_parent</item>
+    <style name="AppBaseTheme" parent="Theme.AppCompat">
+
+    </style>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="OsmLoginActivityTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:cacheColorHint">#FEFFFF</item>
+        <item name="android:windowBackground">@drawable/gradient_background</item>
+    </style>
+
+    <style name="MapActivityBaseTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/map_view_background_color</item>
+        <item name="android:cacheColorHint">@color/map_view_background_color</item>
+    </style>
+
+    <style name="MapActivityTheme" parent="MapActivityBaseTheme">
+        <item name="windowActionBarOverlay">true</item>
+        <item name="actionBarStyle">@style/MapActivityActionBar</item>
+    </style>
+
+    <style name="MapActivityActionBar" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="displayOptions">showHome|useLogo</item>
     </style>
 
     <style name="ContentWrapper">

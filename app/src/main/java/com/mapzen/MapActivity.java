@@ -38,7 +38,6 @@ import com.mapzen.constants.MapzenConstants;
 import com.mapzen.controls.CustomZoomControl;
 import com.mapzen.controls.LoadingPoisIndicator;
 import com.mapzen.controls.PlaceMovedNotificationControl;
-import com.mapzen.controls.ZoomInToAddPois;
 import com.mapzen.data.SettingsManager;
 import com.mapzen.data.StatisticManager;
 import com.mapzen.data.osm.OsmNode;
@@ -52,10 +51,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -67,7 +69,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-public class MapActivity extends Activity implements
+public class MapActivity extends ActionBarActivity implements
         OsmPoisOverlay.OnPoiCalloutTapListener,
         OsmPoisOverlay.MapDataDownloadProgressListener,
         OsmPoisOverlay.OnPoiMovedListener, MapzenConstants, MapListener {
@@ -84,7 +86,7 @@ public class MapActivity extends Activity implements
 
     /** Progress indicator control for map data download */
     private LoadingPoisIndicator progressIndicator;
-    private ZoomInToAddPois zoomInToAddPoisView;
+    private View zoomInToAddPoisView;
     private CustomZoomControl zoomControl;
     private PlaceMovedNotificationControl placeMovedNotification;
 
@@ -148,8 +150,11 @@ public class MapActivity extends Activity implements
 
         setContentView(R.layout.main);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         mOsmv = (MapView) findViewById(R.id.mapViewId);
         mOsmv.setMultiTouchControls(true);
+        mOsmv.setBackgroundColor(Color.TRANSPARENT);
 
         //Set MapListener (zoom & scroll events)
         DelayedMapListener dml = new DelayedMapListener(this, 50);
@@ -174,7 +179,7 @@ public class MapActivity extends Activity implements
 
         // other controls initialization
         progressIndicator = (LoadingPoisIndicator) findViewById(R.id.loadingProgressIndicatorId);
-        zoomInToAddPoisView = (ZoomInToAddPois) findViewById(R.id.zoomInToAddPoisViewId);
+        zoomInToAddPoisView = findViewById(R.id.zoomInToAddPoisViewId);
         zoomInToAddPoisView
                 .setVisibility(mOsmv.getZoomLevel() < minZoomForOsmDataDownload ? View.VISIBLE
                         : View.INVISIBLE);

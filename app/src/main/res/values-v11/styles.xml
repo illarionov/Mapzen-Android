@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MapActivityTheme" parent="MapActivityBaseTheme">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/MapActivityActionBar</item>
+        <item name="android:displayOptions">showHome|useLogo</item>
+    </style>
+
+    <style name="MapActivityActionBar" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="android:displayOptions">showHome|useLogo</item>
+    </style>
+
+</resources>
