@@ -16,6 +16,7 @@
 #   public *;
 #}
 
+-dontobfuscate
 
 # OsmDroid
 -dontwarn org.osmdroid.contributor.*
