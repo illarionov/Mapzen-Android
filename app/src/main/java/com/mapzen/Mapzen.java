@@ -88,8 +88,6 @@ public class Mapzen extends Application implements MapzenConstants {
     @Override
     public void onCreate() {
         if (isCrashReportingEnabled) ACRA.init(this);
-        // Retrieve CloudMade API key from Manifest
-        CloudmadeUtil.retrieveCloudmadeKey(this.getApplicationContext());
         initDataManagers();
         super.onCreate();
     }
