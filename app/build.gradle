@@ -98,4 +98,5 @@ if (ext.private.getProperty('release.StoreFile') != null) {
     android.signingConfigs.release.keyPassword = ext.private['release.KeyPassword']
 } else {
     android.buildTypes.release.signingConfig = null
+    android.buildTypes.beta.signingConfig = null
 }
