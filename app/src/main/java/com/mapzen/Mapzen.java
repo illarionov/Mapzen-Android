@@ -46,9 +46,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 
 @ReportsCrashes(
-        formKey = "dFJ2ekYyOHp1WkJIVk11dnZnUWNKZlE6MQ",
+        formKey = "",
+        mailTo = "bug@0xdc.ru",
         mode = ReportingInteractionMode.NOTIFICATION,
-        resToastText = R.string.crash_toast_text
+        resToastText = R.string.crash_toast_text,
+        resNotifTickerText = R.string.crash_notif_ticker_text,
+        resNotifTitle = R.string.crash_notif_title,
+        resDialogText = R.string.crash_dialog_text,
+        resNotifText = R.string.crash_notif_text
         )
 public class Mapzen extends Application implements MapzenConstants {
 

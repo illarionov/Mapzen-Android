@@ -108,4 +108,12 @@
     <string name="osm_data_download_manual">POIs will be loaded manually, using "Menu -> Load POIs" </string>
     <string name="poi_website_edit_hint">http://</string>
     <string name="place_moved_default_value">Place moved: Unknown</string>
+
+    <string name="crash_notif_ticker_text">Unexpected error, please send a report…</string>
+    <string name="crash_notif_title">CrashTest has crashed…</string>
+    <string name="crash_notif_text">Please click here to help fix the issue.</string>
+    <string name="crash_dialog_text">An unexpected error occurred forcing the
+    application to stop. Please help us fix this by sending us error data,
+    all you have to do is click OK.</string>
+
 </resources>
