@@ -26,7 +26,7 @@
 
     <string name="bakery">Пекарня / Булочная</string>
     <string name="cafe">Кафе</string>
-    <string name="fast_food">Фаст-фуд</string>
+    <string name="fast_food">Фастфуд</string>
     <string name="pub">Паб</string>
     <string name="restaurant">Ресторан</string>
 
@@ -47,7 +47,7 @@
     <string name="hospital">Больница</string>
     <string name="optician">Окулист</string>
     <string name="pharmacy">Аптека</string>
-    <string name="veterinary">Ветеренарный врач</string>
+    <string name="veterinary">Ветеринарный врач</string>
 
     <string name="entertainment">Развлечения и досуг</string>
 
@@ -125,7 +125,7 @@
     <string name="basketball">Баскетбол</string>
     <string name="boules">Boules</string>
     <string name="bowls">Боулинг</string>
-    <string name="canoe">Каное</string>
+    <string name="canoe">Каноэ</string>
     <string name="climbing">Подъем по скале</string>
     <string name="cricket">Крикет</string>
     <string name="cricket_nets">Крикетные \"сети\"</string>
@@ -137,7 +137,7 @@
     <string name="gymnastics">Гимнастика</string>
     <string name="hockey">Хоккей</string>
     <string name="horse_racing">Конные перегоны</string>
-    <string name="motor_sport">Мото спорт</string>
+    <string name="motor_sport">Мотоспорт</string>
     <string name="multi">Multi</string>
     <string name="pelota">Pelota</string>
     <string name="pitch">Pitch</string>
@@ -166,8 +166,8 @@
     <string name="books">Книги</string>
     <string name="stationery">Канцелярские товары</string>
     <string name="music_video">Музыка и видео</string>
-    <string name="computers">Компъютеры</string>
-    <string name="electronics">Електроника</string>
+    <string name="computers">Компьютеры</string>
+    <string name="electronics">Электроника</string>
     <string name="photo">Фото</string>
     <string name="phone">Телефоны</string>
     <string name="mobile">Мобильные телефоны</string>
@@ -197,7 +197,7 @@
     <string name="post_box">Почтовый ящик</string>
     <string name="internet_cafe">Интернет кафе</string>
     <string name="publicToilets">Общественный туалет</string>
-    <string name="recycling">Мусорник</string>
+    <string name="recycling">Мусоросборник</string>
     <string name="drinkingWater">Питьевая вода</string>
     <string name="telephone">Телефон</string>
     <string name="surveillance">Место надзора</string>
@@ -205,5 +205,5 @@
     <string name="brothel">Публичный дом</string>
     <string name="laundry">Прачечная</string>
     <string name="hairdresser">Парикмахерская</string>
-    <string name="travel_agency">Туристическое агенство</string>
+    <string name="travel_agency">Туристическое агентство</string>
 </resources>
