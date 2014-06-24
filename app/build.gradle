@@ -55,11 +55,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             buildConfigField "String", "OSM_SERVER_ADDRESS",
-                    project.ext.private.getProperty("release.OsmServerAddress", "\"http://www.openstreetmap.org\"")
+                    project.ext.private.getProperty("release.OsmServerAddress", "\"http://master.apis.dev.openstreetmap.org\"")
             buildConfigField "String", "OSM_CONSUMER_KEY",
-                    project.ext.private.getProperty("release.OsmConsumerKey", "\"\"")
+                    project.ext.private.getProperty("release.OsmConsumerKey", "\"pCcgGqMCg91CDDbsbhLYQgLYAfV9IBUmFFMC1zZl\"")
             buildConfigField "String", "OSM_CONSUMER_SECRET",
-                    project.ext.private.getProperty("release.OsmConsumerSecret", "\"\"")
+                    project.ext.private.getProperty("release.OsmConsumerSecret", "\"91kzSFar5whEjNzuIFNP1FPKK51Gr40E4pGbqcjm\"")
         }
     }
 
