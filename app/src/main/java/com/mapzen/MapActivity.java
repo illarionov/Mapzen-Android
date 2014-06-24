@@ -53,6 +53,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -319,12 +320,11 @@ public class MapActivity extends Activity implements
             public void run() {
                 placeMovedNotification.setVisibility(View.GONE);
                 if (!wasCanceled) {
-                    OSMFacade.updateNode(movedPoi);
+                    new UpdateNodeAsyncTask().execute(movedPoi);
                 } else {
                     movedPoi.revertCoordinates();
+                    mOsmv.invalidate();
                 }
-                wasCanceled = false;
-                mOsmv.invalidate();
             }
         }, 3000);
 
@@ -354,5 +354,19 @@ public class MapActivity extends Activity implements
         zoomControl.setIsZoomOutEnabled(mOsmv.canZoomOut());
 
         return mPoisOverlay.onZoom(event);
+    }
+
+    private class UpdateNodeAsyncTask extends AsyncTask<OsmNode, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(OsmNode... params) {
+            OSMFacade.updateNode(params[0]);
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            wasCanceled = false;
+            mOsmv.invalidate();
+        }
     }
 }
