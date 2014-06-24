@@ -90,6 +90,8 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
 
         setContentView(R.layout.splash_screen);
 
+        ((TextView)findViewById(R.id.osm_login_page_text2)).setText(BuildConfig.VERSION_NAME);
+
         // verifing OAUTH credentials here (in background)
         OAuthAccessTokenHolder oauthTokenHolder = OAuthAccessTokenHolder.getInstance();
         oauthTokenHolder.loadFromPreferences(Mapzen.getSharedPreferences());
@@ -101,6 +103,7 @@ public class OsmLoginActivity extends Activity implements MapzenConstants {
         if (!isSDCardAvailable()) {
             showDialog(DIALOG_SD_CARD_UNAVAILABLE);
         }
+
     }
 
     @Override

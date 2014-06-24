@@ -5,6 +5,15 @@ if (rootProject.file('private.properties').exists()) {
     ext.private.load(new FileInputStream(rootProject.file('private.properties')));
 }
 
+def getRevision = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
 android {
     compileSdkVersion 19
     buildToolsVersion "19.1.0"
@@ -50,22 +59,36 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "dbg-" + getRevision()
+        }
         release {
             runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            buildConfigField "String", "OSM_SERVER_ADDRESS",
-                    project.ext.private.getProperty("release.OsmServerAddress", "\"http://master.apis.dev.openstreetmap.org\"")
-            buildConfigField "String", "OSM_CONSUMER_KEY",
-                    project.ext.private.getProperty("release.OsmConsumerKey", "\"pCcgGqMCg91CDDbsbhLYQgLYAfV9IBUmFFMC1zZl\"")
-            buildConfigField "String", "OSM_CONSUMER_SECRET",
-                    project.ext.private.getProperty("release.OsmConsumerSecret", "\"91kzSFar5whEjNzuIFNP1FPKK51Gr40E4pGbqcjm\"")
+        }
+        beta {
+            versionNameSuffix "b-" + getRevision()
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
     lintOptions {
         disable 'MissingTranslation'
     }
+}
+
+['beta', 'release'].each { typeName ->
+    def bt = android.buildTypes[typeName]
+    bt.buildConfigField "String", "OSM_SERVER_ADDRESS",
+            project.ext.private.getProperty("${typeName}.OsmServerAddress", "\"http://master.apis.dev.openstreetmap.org\"")
+    bt.buildConfigField "String", "OSM_CONSUMER_KEY",
+            project.ext.private.getProperty("${typeName}.OsmConsumerKey", "\"pCcgGqMCg91CDDbsbhLYQgLYAfV9IBUmFFMC1zZl\"")
+    bt.buildConfigField "String", "OSM_CONSUMER_SECRET",
+            project.ext.private.getProperty("${typeName}.OsmConsumerSecret", "\"91kzSFar5whEjNzuIFNP1FPKK51Gr40E4pGbqcjm\"")
 }
 
 if (ext.private.getProperty('release.StoreFile') != null) {
