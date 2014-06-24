@@ -188,6 +188,7 @@ public class OsmNode implements Tagged {
         if (poi._website != null)
             this._website = poi._website;
         this.hotSpot = new Point(poi.hotSpot);
+        this.icon = poi.icon;
     }
 
     public IGeoPoint getCoordinates() {
